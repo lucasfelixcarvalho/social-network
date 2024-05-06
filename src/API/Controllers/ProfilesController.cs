@@ -7,9 +7,10 @@ namespace API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProfilesController(IProfileService service) : ControllerBase
+public class ProfilesController(IProfileService service, IPostService postService) : ControllerBase
 {
     private readonly IProfileService _service = service;
+    private readonly IPostService _postService = postService;
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, UpdateProfileInputModel model)
@@ -62,4 +63,18 @@ public class ProfilesController(IProfileService service) : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("{id}/posts")]
+    public IActionResult GetPostsByProfileId(int id)
+    {
+        ResultOutputModel<List<PostListOutputModel>> result = _postService.GetByProfileId(id);
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result);
+        }
+
+        return Ok(result);
+    }
+
 }
