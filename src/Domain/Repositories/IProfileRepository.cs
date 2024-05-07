@@ -7,6 +7,5 @@ public interface IProfileRepository
 {
     Profile? GetById(int id);
     List<Profile> GetByLocation(Location location);
-    void Inactivate(Profile profile);
     void Update(Profile profile);
 }

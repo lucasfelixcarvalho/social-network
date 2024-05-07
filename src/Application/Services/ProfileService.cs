@@ -39,7 +39,7 @@ public class ProfileService(IProfileRepository repository) : IProfileService
         }
 
         profile.Inactivate();
-        _repository.Inactivate(profile);
+        _repository.Update(profile);
         return ResultOutputModel.Success();
     }
 

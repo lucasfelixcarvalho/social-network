@@ -27,8 +27,8 @@ public class AccountService(IAuthService authService, IAccountRepository reposit
     {
         string hashedPassword = _authService.ComputeHash(model.password);
         Account account = new(model.fullname, hashedPassword, model.email, model.birth_date, model.phone_number, model.role);
-        int id = _repository.Insert(account);
-        return ResultOutputModel<int>.Success(id);
+        _repository.Insert(account);
+        return ResultOutputModel<int>.Success(account.Id);
     }
 
     public ResultOutputModel<LoginOutputModel?> Login(LoginInputModel model)
