@@ -9,4 +9,5 @@ public interface IProfileService
     ResultOutputModel<ProfileDetailsOutputModel?> GetProfileById(int id);
     ResultOutputModel<List<ProfileListOutputModel>> GetProfilesByLocation(LocationInputModel model);
     ResultOutputModel Inactivate(int id);
+    void Create(CreateProfileInputModel model);
 }

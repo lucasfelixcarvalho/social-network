@@ -6,10 +6,11 @@ using Infra.Auth;
 
 namespace Application.Services;
 
-public class AccountService(IAuthService authService, IAccountRepository repository) : IAccountService
+public class AccountService(IAuthService authService, IAccountRepository repository, IProfileService profileService) : IAccountService
 {
     private readonly IAuthService _authService = authService;
     private readonly IAccountRepository _repository = repository;
+    private readonly IProfileService _profileService = profileService;
 
     public ResultOutputModel<AccountDetailsOutputModel?> GetById(int id)
     {
@@ -28,6 +29,10 @@ public class AccountService(IAuthService authService, IAccountRepository reposit
         string hashedPassword = _authService.ComputeHash(model.password);
         Account account = new(model.fullname, hashedPassword, model.email, model.birth_date, model.phone_number, model.role);
         _repository.Insert(account);
+
+        CreateProfileInputModel profileModel = CreateProfileInputModel.EmptyProfile(account.Id, account.FullName);
+        _profileService.Create(profileModel);
+
         return ResultOutputModel<int>.Success(account.Id);
     }
 

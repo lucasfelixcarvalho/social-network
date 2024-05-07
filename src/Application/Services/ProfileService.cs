@@ -10,6 +10,11 @@ public class ProfileService(IProfileRepository repository) : IProfileService
 {
     private readonly IProfileRepository _repository = repository;
 
+    public void Create(CreateProfileInputModel model)
+    {
+        _repository.Create(new Profile(model.account_id, model.display_name, model.bio, model.photo, new Location(model.city, model.country), model.profession));
+    }
+
     public ResultOutputModel<ProfileDetailsOutputModel?> GetProfileById(int id)
     {
         Profile? profile = _repository.GetById(id);

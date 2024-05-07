@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Persistence.DbContexts;
 
 namespace Persistence.Repositories;
@@ -10,7 +11,9 @@ public class AccountRepository(SocialNetworkDbContext dbContext) : IAccountRepos
 
     public Account? GetById(int id)
     {
-        return _dbContext.Accounts.SingleOrDefault(x => x.Id == id);
+        return _dbContext.Accounts
+            .Include(p => p.Profile)
+            .SingleOrDefault(x => x.Id == id);
     }
 
     public Account? GetByLoginAndHash(string email, string hash)

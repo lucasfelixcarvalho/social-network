@@ -4,8 +4,9 @@ namespace Domain.Entities;
 
 public class Profile : BaseEntity
 {
-    public Profile(string displayName, string bio, string photo, Location location, string? profession) : base()
+    public Profile(int accountId, string displayName, string bio, string photo, Location location, string? profession) : base()
     {
+        AccountId = accountId;
         DisplayName = displayName;
         Bio = bio;
         Photo = photo;

@@ -9,6 +9,12 @@ public class ProfileRepository(SocialNetworkDbContext dbContext) : IProfileRepos
 {
     private readonly SocialNetworkDbContext _dbContext = dbContext;
 
+    public void Create(Profile profile)
+    {
+        _dbContext.Profiles.Add(profile);
+        _dbContext.SaveChanges();
+    }
+
     public Profile? GetById(int id)
     {
         return _dbContext.Profiles.SingleOrDefault(p => p.Id == id);
