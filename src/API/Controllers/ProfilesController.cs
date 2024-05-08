@@ -1,6 +1,7 @@
 ﻿using Application.InputModels;
 using Application.OutputModels;
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -13,6 +14,7 @@ public class ProfilesController(IProfileService service, IPostService postServic
     private readonly IPostService _postService = postService;
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "user")]
     public IActionResult Update(int id, UpdateProfileInputModel model)
     {
         ResultOutputModel result = _service.Update(id, model);
@@ -26,6 +28,7 @@ public class ProfilesController(IProfileService service, IPostService postServic
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public IActionResult Get(int id)
     {
         ResultOutputModel<ProfileDetailsOutputModel?> result = _service.GetProfileById(id);
@@ -39,6 +42,7 @@ public class ProfilesController(IProfileService service, IPostService postServic
     }
 
     [HttpGet]
+    [Authorize(Roles = "user")]
     public IActionResult GetByLocation(string city, string country)
     {
         ResultOutputModel<List<ProfileListOutputModel>> result = _service.GetProfilesByLocation(new LocationInputModel(city, country));
@@ -52,6 +56,7 @@ public class ProfilesController(IProfileService service, IPostService postServic
     }
 
     [HttpPut("{id}/inactivate")]
+    [Authorize(Roles = "user")]
     public IActionResult Inactivate(int id)
     {
         ResultOutputModel result = _service.Inactivate(id);
@@ -65,6 +70,7 @@ public class ProfilesController(IProfileService service, IPostService postServic
     }
 
     [HttpGet("{id}/posts")]
+    [AllowAnonymous]
     public IActionResult GetPostsByProfileId(int id)
     {
         ResultOutputModel<List<PostListOutputModel>> result = _postService.GetByProfileId(id);

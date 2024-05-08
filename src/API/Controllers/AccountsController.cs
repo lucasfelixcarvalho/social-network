@@ -1,6 +1,7 @@
 ﻿using Application.InputModels;
 using Application.OutputModels;
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -12,6 +13,7 @@ public class AccountsController(IAccountService service) : ControllerBase
     private readonly IAccountService _service = service;
 
     [HttpPost]
+    [AllowAnonymous]
     public IActionResult Post(CreateAccountInputModel model)
     {
         ResultOutputModel<int> result = _service.Insert(model);
@@ -25,6 +27,7 @@ public class AccountsController(IAccountService service) : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "user")]
     public IActionResult GetById(int id)
     {
         ResultOutputModel<AccountDetailsOutputModel?> result = _service.GetById(id);
@@ -51,6 +54,7 @@ public class AccountsController(IAccountService service) : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "user")]
     public IActionResult Update(int id, UpdateAccountInputModel model)
     {
         ResultOutputModel result = _service.Update(id, model);

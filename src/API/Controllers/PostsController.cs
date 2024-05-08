@@ -1,6 +1,7 @@
 ﻿using Application.InputModels;
 using Application.OutputModels;
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -12,6 +13,7 @@ public class PostsController(IPostService service) : ControllerBase
     private readonly IPostService _service = service;
 
     [HttpPost]
+    [Authorize(Roles = "user")]
     public IActionResult Post(CreatePostInputModel model)
     {
         ResultOutputModel<int> result = _service.Insert(model);
@@ -25,6 +27,7 @@ public class PostsController(IPostService service) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "user")]
     public IActionResult Delete(int id)
     {
         ResultOutputModel result = _service.Delete(id);
@@ -38,7 +41,8 @@ public class PostsController(IPostService service) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult Post(int id, UpdatePostInputModel model)
+    [Authorize(Roles = "user")]
+    public IActionResult Put(int id, UpdatePostInputModel model)
     {
         ResultOutputModel result = _service.Update(id, model);
 
@@ -51,6 +55,7 @@ public class PostsController(IPostService service) : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "user")]
     public IActionResult GetById(int id)
     {
         ResultOutputModel<PostDetailsOutputModel> result = _service.GetByid(id);
