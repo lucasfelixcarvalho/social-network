@@ -20,8 +20,7 @@ public class Account : BaseEntity
     public DateOnly BirthDate { get; private set; }
     public string PhoneNumber { get; set; }
     public string Role { get; private set; }
-    public int ProfileId { get; private set; }
-    public Profile Profile { get; private set; }
+    public Profile? Profile { get; private set; }
 
     public void Update(string newFullName, string newPhoneNumber)
     {

@@ -12,8 +12,8 @@ using Persistence.DbContexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(SocialNetworkDbContext))]
-    [Migration("20240507215800_AccountProfileNewFields")]
-    partial class AccountProfileNewFields
+    [Migration("20240508214727_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,9 +57,6 @@ namespace Persistence.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProfileId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -220,8 +217,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Account", b =>
                 {
-                    b.Navigation("Profile")
-                        .IsRequired();
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("Domain.Entities.Profile", b =>

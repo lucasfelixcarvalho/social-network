@@ -27,7 +27,7 @@ public class AccountService(IAuthService authService, IAccountRepository reposit
     public ResultOutputModel<int> Insert(CreateAccountInputModel model)
     {
         string hashedPassword = _authService.ComputeHash(model.password);
-        Account account = new(model.fullname, hashedPassword, model.email, model.birth_date, model.phone_number, model.role);
+        Account account = new(model.fullname, hashedPassword, model.email, DateOnly.FromDateTime(model.birth_date), model.phone_number, model.role);
         _repository.Insert(account);
 
         CreateProfileInputModel profileModel = CreateProfileInputModel.EmptyProfile(account.Id, account.FullName);
@@ -74,8 +74,15 @@ public class AccountService(IAuthService authService, IAccountRepository reposit
             return ResultOutputModel.Failure("Not Found");
         }
 
-        string receivedPasswordHashed = _authService.ComputeHash(model.new_password);
-        account.UpdatePassword(receivedPasswordHashed);
+        string receivedOldPasswordHashed = _authService.ComputeHash(model.old_password);
+
+        if (!account.Password.Equals(receivedOldPasswordHashed))
+        {
+            return ResultOutputModel.Failure("Error");
+        }
+
+        string receivedNewPasswordHashed = _authService.ComputeHash(model.new_password);
+        account.UpdatePassword(receivedNewPasswordHashed);
         _repository.Update(account);
         return ResultOutputModel.Success();
     }

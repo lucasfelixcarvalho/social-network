@@ -22,7 +22,7 @@ public class ProfileRepository(SocialNetworkDbContext dbContext) : IProfileRepos
 
     public List<Profile> GetByLocation(Location location)
     {
-        return _dbContext.Profiles.Where(p => p.Location == location).ToList();
+        return _dbContext.Profiles.Where(p => p.Location.City == location.City && p.Location.Country == location.Country).ToList();
     }
 
     public void Update(Profile profile)

@@ -6,6 +6,6 @@ public record AccountDetailsOutputModel(int id, string name, int profile_id)
 {
     public static AccountDetailsOutputModel FromEntity(Account account)
     {
-        return new AccountDetailsOutputModel(account.Id, account.FullName, account.ProfileId);
+        return new AccountDetailsOutputModel(account.Id, account.FullName, account.Profile?.Id ?? 0);
     }
 }

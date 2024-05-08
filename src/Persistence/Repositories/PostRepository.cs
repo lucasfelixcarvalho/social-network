@@ -21,7 +21,7 @@ public class PostRepository(SocialNetworkDbContext dbContext) : IPostRepository
 
     public List<Post> GetByProfileId(int profileId)
     {
-        return _dbContext.Posts.Where(p => p.ProfileId == profileId).ToList();
+        return _dbContext.Posts.Where(p => p.ProfileId == profileId).OrderByDescending(p => p.PublishedAt).ToList();
     }
 
     public void Insert(Post post)
