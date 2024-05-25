@@ -14,6 +14,8 @@ public class Profile : BaseEntity
         Active = true;
         Profession = profession;
         Posts = [];
+        Followers = [];
+        Following = [];
     }
 
     protected Profile() { } // For EF
@@ -27,6 +29,8 @@ public class Profile : BaseEntity
     public List<Post> Posts { get; private set; }
     public int AccountId { get; private set; }
     public Account Account { get; private set; }
+    public List<Connection> Followers { get; private set; }
+    public List<Connection> Following { get; private set; }
 
     public void Update(string newDisplayName, Location location, string newBio, string newPhoto, string? newProfession)
     {

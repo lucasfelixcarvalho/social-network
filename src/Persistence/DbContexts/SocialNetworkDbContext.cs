@@ -13,6 +13,7 @@ public class SocialNetworkDbContext : DbContext
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Profile> Profiles { get; set; }
     public DbSet<Post> Posts { get; set; }
+    public DbSet<Connection> Connections { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -41,6 +42,16 @@ public class SocialNetworkDbContext : DbContext
             .WithOne(p => p.Profile)
             .HasForeignKey(p => p.ProfileId)
             .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasMany(p => p.Followers)
+            .WithOne(p => p.ProfileFollower)
+            .HasForeignKey(p => p.ProfileIdFollower)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasMany(p => p.Following)
+            .WithOne(p => p.ProfileFollowing)
+            .HasForeignKey(p => p.ProfileIdFollowing)
+            .OnDelete(DeleteBehavior.Restrict);
         });
 
         builder.Entity<Post>(e =>
@@ -53,6 +64,12 @@ public class SocialNetworkDbContext : DbContext
                 l.Property(l => l.City).HasColumnName("City");
                 l.Property(l => l.Country).HasColumnName("Country");
             });
+        });
+
+        builder.Entity<Connection>(e =>
+        {
+            e.HasKey(p => new { p.ProfileIdFollowing, p.ProfileIdFollower });
+
         });
 
         base.OnModelCreating(builder);
