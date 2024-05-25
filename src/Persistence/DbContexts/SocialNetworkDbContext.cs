@@ -44,8 +44,8 @@ public class SocialNetworkDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
             e.HasMany(p => p.Followers)
-            .WithOne(p => p.ProfileFollower)
-            .HasForeignKey(p => p.ProfileIdFollower)
+            .WithOne(p => p.Profile)
+            .HasForeignKey(p => p.ProfileId)
             .OnDelete(DeleteBehavior.Restrict);
 
             e.HasMany(p => p.Following)
@@ -68,8 +68,9 @@ public class SocialNetworkDbContext : DbContext
 
         builder.Entity<Connection>(e =>
         {
-            e.HasKey(p => new { p.ProfileIdFollowing, p.ProfileIdFollower });
+            e.HasKey(p => new { p.ProfileIdFollowing, p.ProfileId });
 
+            e.Property(c => c.ConnectionDate).HasDefaultValueSql("GETDATE()");
         });
 
         base.OnModelCreating(builder);

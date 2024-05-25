@@ -17,6 +17,7 @@ public static class ApplicationModule
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IProfileService, ProfileService>();
         services.AddScoped<IPostService, PostService>();
+        services.AddScoped<IConnectionService, ConnectionService>();
 
         return services;
     }

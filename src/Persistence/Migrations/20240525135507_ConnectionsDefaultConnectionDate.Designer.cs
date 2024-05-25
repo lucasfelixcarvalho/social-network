@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.DbContexts;
 
@@ -11,9 +12,11 @@ using Persistence.DbContexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(SocialNetworkDbContext))]
-    partial class SocialNetworkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240525135507_ConnectionsDefaultConnectionDate")]
+    partial class ConnectionsDefaultConnectionDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,7 +72,7 @@ namespace Persistence.Migrations
                     b.Property<int>("ProfileIdFollowing")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProfileId")
+                    b.Property<int>("ProfileIdFollower")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ConnectionDate")
@@ -77,9 +80,9 @@ namespace Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.HasKey("ProfileIdFollowing", "ProfileId");
+                    b.HasKey("ProfileIdFollowing", "ProfileIdFollower");
 
-                    b.HasIndex("ProfileId");
+                    b.HasIndex("ProfileIdFollower");
 
                     b.ToTable("Connections");
                 });
@@ -160,9 +163,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Connection", b =>
                 {
-                    b.HasOne("Domain.Entities.Profile", "Profile")
+                    b.HasOne("Domain.Entities.Profile", "ProfileFollower")
                         .WithMany("Followers")
-                        .HasForeignKey("ProfileId")
+                        .HasForeignKey("ProfileIdFollower")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -172,7 +175,7 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Profile");
+                    b.Navigation("ProfileFollower");
 
                     b.Navigation("ProfileFollowing");
                 });

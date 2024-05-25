@@ -30,6 +30,7 @@ public static class PersistenceModule
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IProfileRepository, ProfileRepository>();
         services.AddScoped<IPostRepository, PostRepository>();
+        services.AddScoped<IConnectionRepository, ConnectionRepository>();
 
         return services;
     }
